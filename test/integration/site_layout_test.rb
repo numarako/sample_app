@@ -28,4 +28,13 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", edit_user_path(@user)
     assert_select "a[href=?]", logout_path
   end
+
+  test "check stats" do
+    log_in_as(@user)
+    get root_path
+    assert_template 'static_pages/home'
+    #統計情報の確認
+    assert_select 'strong#following', text:@user.following.count.to_s
+    assert_select 'strong#following', text:@user.followers.count.to_s
+  end
 end
